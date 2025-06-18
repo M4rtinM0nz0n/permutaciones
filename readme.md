@@ -13,7 +13,7 @@ Este proyecto en python permite generar y mostrar:
     Ejecutar la operación correspondiente
     Mostrar los resultados
 
-  funcitón factorial(paramétro: number):
+  función factorial(paramétro: number):
     Si number es 0 o 1: retornar 1
     Sino: retornar number * factorial(number-1)
   
@@ -59,6 +59,7 @@ Escenario 1:
   ['b', 'c', 'a']
   ['c', 'a', 'b']
   ['c', 'b', 'a']
+
 Escenario 2:
 Ingrese una opción (1-3): 2
 escogiste combinación
