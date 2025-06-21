@@ -76,12 +76,12 @@ def verifyOption(option):
       return 404
     return availableOptions[option - 1]
   elif isinstance(option, str):
-    option = option.lower()
-    if option in ['permutacion', 'permutación', 'permutaciones']:
+    option = removeAccents(option)
+    if option in ['permutacion', 'permutaciones']:
       return 'permutación'
-    elif option in ['combinacion', 'combinación', 'combinaciones']:
+    elif option in ['combinacion', 'combinaciones']:
       return 'combinación'
-    elif option in ['variacion', 'variación', 'variaciones']:
+    elif option in ['variacion', 'variaciones']:
       return 'variación'
     else:
       return 404
@@ -126,9 +126,9 @@ def main():
     for r in res:
       print(r)
   elif removeAccents(option) == "combinacion":
-    pass
+    return "No implementado"
   elif removeAccents(option) == "variacion":
-    pass
+    return "No implementado"
 
 """
   ------- Nota -------
