@@ -98,6 +98,20 @@ def solvePermutation(elements):
       perms.append([elements[x]] + p)
   return perms
 
+def solveCombination(elements, r):
+  def combine(current, remaining, start):
+    if len(current) == r:
+      result.append(current[:])
+      return
+    for i in range(start, len(remaining)):
+      current.append(remaining[i])
+      combine(current, remaining, i + 1)
+      current.pop()
+
+  result = []
+  combine([], elements, 0)
+  return result
+
 def main():
   print("Operaciones disponibles: " \
         "\n1. Permutaciones (Todas las ordenaciones posibles)" \
@@ -125,8 +139,16 @@ def main():
     print(f"\nPermutaciones ({len(res)} en total):")
     for r in res:
       print(r)
+  
   elif removeAccents(option) == "combinacion":
-    return "No implementado"
+    r = int(input("¿Cuántos elementos desea elegir? "))
+    if r > len(elements) or r <= 0:
+      print("Número inválido. No puede elegir más elementos de los disponibles.")
+      return
+    res = solveCombination(elements, r)
+    print(f"\nCombinaciones ({len(res)} en total):")
+    for c in res:
+      print(c)
   elif removeAccents(option) == "variacion":
     return "No implementado"
 
