@@ -29,6 +29,24 @@ Este proyecto en python permite generar y mostrar:
       agregar el elemento actual al principio de cada permutación
     Retornar la lista completa de permutaciones
   
+  función combinaciones(lista, r):
+  Si r == 0:
+    Retornar [[]]  // Solo una combinación: la lista vacía
+  Si lista está vacía:
+    Retornar []    // No hay más combinaciones posibles
+
+  elemento = primer elemento de la lista
+  resto = lista sin el primer elemento
+
+  // 1. Combinaciones que incluyen al primer elemento
+  con_elemento = combinaciones(resto, r - 1)
+  Para cada combinacion en con_elemento:
+    Agregar elemento al principio de la combinación
+
+  // 2. Combinaciones que no incluyen al primer elemento
+  sin_elemento = combinaciones(resto, r)
+
+  Retornar con_elemento + sin_elemento
 ```
 
 ## REGLAS
