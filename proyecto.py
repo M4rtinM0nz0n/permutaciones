@@ -1,9 +1,41 @@
 
-print('=== Equipo === \nMartín Monzón, Maximiliano Duarte, Facundo Bellochi')
+print('=== Equipo === \nMartín Monzón y Facundo Bellochi')
 """
-  Esto es una función recursiva, para entender cómo funciona esto, hay que entender algo llamado Callstack.
-  Un callstack es como un listado de llamadas a funciones. Imaginemos que tenemos un prorgama que simula un restaurante.
-  Dentro de este restaurante, los 
+  Escenario 1:
+    Operaciones disponibles:
+    1. Permutaciones (Todas las ordenaciones posibles)
+    2. Combinaciones (Las selecciones sin importar el orden)
+    Por favor, ingrese una opción (numérica o por nombre): <input> 1
+    escogiste permutación
+    Por favor, introduzca los elementos, separados por coma. (por ejemplo: a,b,c)
+
+  Permutaciones (6 en total):
+    ['a', 'b', 'c']
+    ['a', 'c', 'b']
+    ['b', 'a', 'c']
+    ['b', 'c', 'a']
+    ['c', 'a', 'b']
+    ['c', 'b', 'a']
+
+  Escenario 2:
+    Ingrese una opción (1-3): 2
+    escogiste combinación
+    Por favor, introduzca los elementos, separados por coma. (por ejemplo: a,b,c): <input> a,b,c,d
+    ¿Cuántos elementos desea tomar? <input> 2
+
+  Combinaciones de 2 elementos (6 en total):
+    ['a', 'b']
+    ['a', 'c']
+    ['a', 'd']
+    ['b', 'c']
+    ['b', 'd']
+    ['c', 'd']
+"""
+
+"""
+    función factorial(paramétro: number):
+      Si number es 0 o 1: retornar 1
+      Sino: retornar number * factorial(number-1)
 """
 def factorial(number):
   if number <= 1:
@@ -21,8 +53,6 @@ def showMenu():
       resolver permutacion...
     else if option = combinacion:
       resolver combinacion...
-    else if option = variacion:
-      resolver variacion...
     else:
       print(Por favor, introduzca un valor válido.)
     
@@ -49,6 +79,10 @@ def showMenu():
   También devuelve sus variantes sin acento (ü = u y ñ = n). Lo mismo con los acentos alternos (à = a)
   Esto por si a algún gracioso se le ocurre escribir:
     permutacioñes
+
+    pseudo-código:
+    funcion quitarAcentos/removeAccents:
+      Crear un objeto con todas las alternativas posibles, incluyendo ñ y ü, ë, ï, ö, o acento alterno (à, è, ì, ò, ù)
 """
 def removeAccents(string):
   accents = {
@@ -64,7 +98,8 @@ def removeAccents(string):
   return textWithoutAccents.lower()
 
 def verifyOption(option):
-  availableOptions = ['permutacion', 'combinacion', 'variacion']
+  availableOptions = ['permutacion', 'combinacion']
+
   # Transformamos el número a entero.
   try:
     option = int(option)
@@ -81,13 +116,21 @@ def verifyOption(option):
       return 'permutación'
     elif option in ['combinacion', 'combinaciones']:
       return 'combinación'
-    elif option in ['variacion', 'variaciones']:
-      return 'variación'
     else:
       return 404
   else:
     print("Error, ocurrió un escenario inesperado, valor inválido.")
 
+"""
+    funcion permutaciones(parametro: lista):
+      si la longitud de la lista es 1: retornar [lista]
+      para cada índice de i en la lista:
+        tomar el elemnto i
+        Formar una lista con los elementos restantes
+        Recursivamente obtener permutaciones del resto
+        agregar el elemento actual al principio de cada permutación
+      Retornar la lista completa de permutaciones
+"""
 def solvePermutation(elements):
   if len(elements) == 1:
     return [elements]
@@ -98,11 +141,54 @@ def solvePermutation(elements):
       perms.append([elements[x]] + p)
   return perms
 
+"""
+    función combinaciones(lista, r):
+      Si r == 0:
+        Retornar [[]]  // Solo una combinación: la lista vacía
+      Si lista está vacía:
+        Retornar []    // No hay más combinaciones posibles
+
+      elemento = primer elemento de la lista
+      resto = lista sin el primer elemento
+
+      // 1. Combinaciones que incluyen al primer elemento
+      con_elemento = combinaciones(resto, r - 1)
+      Para cada combinacion en con_elemento:
+        Agregar elemento al principio de la combinación
+
+      // 2. Combinaciones que no incluyen al primer elemento
+      sin_elemento = combinaciones(resto, r)
+
+      Retornar con_elemento + sin_elemento
+"""
+
+def solveCombination(elements, r):
+  def combine(current, remaining, start):
+    if len(current) == r:
+      result.append(current[:])
+      return
+    for i in range(start, len(remaining)):
+      current.append(remaining[i])
+      combine(current, remaining, i + 1)
+      current.pop()
+
+  result = []
+  combine([], elements, 0)
+  return result
+
+"""
+    función principal/main:
+      Mostrar menú de opciones
+      Pedir al usuario los elementos separados por coma
+      Si la opción requiere r (combinación), pedir r
+      Ejecutar la operación correspondiente
+      Mostrar los resultados
+"""
+
 def main():
   print("Operaciones disponibles: " \
         "\n1. Permutaciones (Todas las ordenaciones posibles)" \
-        "\n2. Combinaciones (Las selecciones sin importar el orden)" \
-        "\n3. Variaciones (Selecciones donde el orden importa)")
+        "\n2. Combinaciones (Las selecciones sin importar el orden)")
   option = input("Por favor, ingrese una opción (numérica o por nombre): ")
   option = option.lstrip('0');
   option = verifyOption(option)
@@ -126,10 +212,14 @@ def main():
     for r in res:
       print(r)
   elif removeAccents(option) == "combinacion":
-    return "No implementado"
-  elif removeAccents(option) == "variacion":
-    return "No implementado"
-
+    r = int(input("¿Cuántos elementos desea elegir? "))
+    if r > len(elements) or r <= 0:
+      print("Número inválido. No puede elegir más elementos de los disponibles.")
+      return
+    res = solveCombination(elements, r)
+    print(f"\nCombinaciones ({len(res)} en total):")
+    for c in res:
+      print(c)
 """
   ------- Nota -------
   Esto es una práctica común en python.
